@@ -13,6 +13,8 @@
 		34DB26A42239AA36009B97F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34DB26A22239AA36009B97F2 /* Main.storyboard */; };
 		34DB26B02239AA36009B97F2 /* MobSquadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB26AF2239AA36009B97F2 /* MobSquadTests.swift */; };
 		34DB26BB2239AA36009B97F2 /* MobSquadUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB26BA2239AA36009B97F2 /* MobSquadUITests.swift */; };
+		34DB26CB2239F6A5009B97F2 /* MobberManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB26CA2239F6A5009B97F2 /* MobberManager.swift */; };
+		34DB26CD2239F752009B97F2 /* MobTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB26CC2239F752009B97F2 /* MobTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,8 @@
 		34DB26B62239AA36009B97F2 /* MobSquadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobSquadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DB26BA2239AA36009B97F2 /* MobSquadUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobSquadUITests.swift; sourceTree = "<group>"; };
 		34DB26BC2239AA36009B97F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34DB26CA2239F6A5009B97F2 /* MobberManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobberManager.swift; sourceTree = "<group>"; };
+		34DB26CC2239F752009B97F2 /* MobTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,8 @@
 				34DB26A22239AA36009B97F2 /* Main.storyboard */,
 				34DB26A52239AA36009B97F2 /* Info.plist */,
 				34DB26A62239AA36009B97F2 /* MobSquad.entitlements */,
+				34DB26CA2239F6A5009B97F2 /* MobberManager.swift */,
+				34DB26CC2239F752009B97F2 /* MobTimer.swift */,
 			);
 			path = MobSquad;
 			sourceTree = "<group>";
@@ -254,8 +260,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34DB26CD2239F752009B97F2 /* MobTimer.swift in Sources */,
 				34DB269F2239AA34009B97F2 /* ViewController.swift in Sources */,
 				34DB269D2239AA34009B97F2 /* AppDelegate.swift in Sources */,
+				34DB26CB2239F6A5009B97F2 /* MobberManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
