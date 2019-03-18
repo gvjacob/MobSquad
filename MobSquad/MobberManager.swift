@@ -8,55 +8,54 @@
 
 import Foundation
 
-/**
- * Manage the mobber list.
- */
 class MobberManager {
-    /**
-     * List of mobbers with their names and whether they are enabled in the rotation.
-     */
-    var mobbers: Array<(name: String, enabled: Bool)>
-    var currentMobber: String
-    var currentMobberIndex: Int {
+    
+    var mobbers: [(name: String, enabled: Bool)] {
         didSet {
-            currentMobber = mobbers[currentMobberIndex].name
+            NotificationCenter.default.post(name: .didUpdateMobbers, object: nil)
+        }
+    }
+    
+    var currentIndex: Int {
+        didSet {
             NotificationCenter.default.post(name: .didChangeMobber, object: nil)
         }
     }
     
-    init(mobbers: Array<String>) {
+    init(mobbers: [String]) {
         self.mobbers = mobbers.map { ($0, true) }
-        currentMobberIndex = 0
-        currentMobber = self.mobbers[currentMobberIndex].name
+        currentIndex = 0
     }
     
-    /**
-     * Add a new mobber.
-     */
+    func next() {
+        currentIndex = getNextIndex()
+    }
+    
+    func getCurrentMobber() -> (name: String, enabled: Bool)? {
+        return getMobberAt(index: currentIndex)
+    }
+
+    func getNextMobber() -> (name: String, enabled: Bool)? {
+        return getMobberAt(index: getNextIndex())
+    }
+    
     func addMobber(name: String, enabled: Bool = true) {
         mobbers.append((name, enabled))
     }
     
-    /**
-     * Remove the given mobber.
-     */
     func removeMobber(name: String) {
         mobbers = mobbers.filter { $0.name != name }
     }
     
-    /**
-     * Enable or disable given mobber.
-     */
     func toggleMobber(name: String) {
         mobbers = mobbers.reduce([]) { arr, mobber in arr + [( mobber.name != name ? mobber : (mobber.name, !mobber.enabled))]}
     }
     
-    func getNextMobberName() -> String {
-        return mobbers[(currentMobberIndex + 1) % mobbers.count].name
+    private func getMobberAt(index: Int) -> (name: String, enabled: Bool)? {
+        return index >= mobbers.count ? nil : mobbers[index]
     }
     
-    func nextMobber() {
-        currentMobberIndex = (currentMobberIndex + 1) % mobbers.count
-
+    private func getNextIndex() -> Int {
+        return (currentIndex + 1) % mobbers.count
     }
 }

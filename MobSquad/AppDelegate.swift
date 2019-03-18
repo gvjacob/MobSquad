@@ -8,28 +8,51 @@
 
 import Cocoa
 
+// Define notification events
 extension Notification.Name {
+    // Mob timer did change time
     static let didChangeTime = Notification.Name("didChangeTime")
+
+    // Mobber manager did change current mobber
     static let didChangeMobber = Notification.Name("didChangeMobber")
+    
+    // Mobber list is updated
+    static let didUpdateMobbers = Notification.Name("didUpdateMobbers")
 }
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    let userDefaults = UserDefaults.standard
+    var mobbers: Array<String>
+    var minutes: Int
+    var shuffle: Bool
     
+    // UI
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+
     
-    let mobberManager = MobberManager(mobbers: ["Gino", "Alan", "Nate", "Margarita"])
-    let timer = MobTimer(minutes: 12)
+    // Models
+    // Need to grab from database
+    var mobberManager: MobberManager
+    var timer: MobTimer
     
+    override init() {
+        mobbers = userDefaults.stringArray(forKey: "mobbers") ?? ["Gino"]
+        minutes = userDefaults.integer(forKey: "minutes")
+        shuffle = userDefaults.bool(forKey: "shuffle")
+        
+        mobberManager = MobberManager(mobbers: self.mobbers)
+        timer = MobTimer(minutes: self.minutes)
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeTime(_:)), name: .didChangeTime, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMobber(_:)), name: .didChangeMobber, object: nil)
         
-        // Insert code here to initialize your application
-        if let button = statusItem.button {
-            button.title = getTitle()
-        }
+
         
+
+        updateStatusItemTitle(title: getTitle())
         constructMenu()
     }
 
@@ -37,42 +60,52 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
     
+    
+    /* Update the status item's title with given title */
+    func updateStatusItemTitle(title: String) {
+        if let button = statusItem.button {
+            button.title = title
+        }
+    }
+
     @objc func onDidChangeTime(_ notification: Notification) {
         if timer.seconds == 0 {
             timer.stop()
             let buttonPressed = timeoutDialog().rawValue
             switch buttonPressed {
             case 1000:
-                mobberManager.nextMobber()
+                mobberManager.next()
                 timer.play()
             case 1001:
-                mobberManager.nextMobber()
-                mobberManager.nextMobber()
+                mobberManager.next()
+                mobberManager.next()
             default:
-                mobberManager.nextMobber()
+                mobberManager.next()
                 timer.play()
             }
         }
-        
-        if let button = statusItem.button {
-            button.title = getTitle()
-        }
+
+        updateStatusItemTitle(title: getTitle())
     }
     
     @objc func onDidChangeMobber(_ notification: Notification) {
-        if let button = statusItem.button {
-            button.title = getTitle()
-        }
+        updateStatusItemTitle(title: getTitle())
     }
     
     @objc func getTitle() -> String {
-        return "\(mobberManager.currentMobber) - \(timer.time)"
+        let mobber = mobberManager.getCurrentMobber()
+        if let unwrappedMobber = mobber {
+            return "\(unwrappedMobber.name) \(timer.time())"
+        }
+        return "MobSquad"
     }
     
     func timeoutDialog() -> NSApplication.ModalResponse {
         let alert = NSAlert()
         alert.messageText = "Time's Up!"
-        alert.informativeText = "\(mobberManager.getNextMobberName()), sit on the keyboard"
+        if let mobber = mobberManager.getNextMobber() {
+            alert.informativeText = "\(mobber.name), sit on the keyboard"
+        }
         alert.alertStyle = .warning
         alert.addButton(withTitle: "Start")
         alert.addButton(withTitle: "Skip")
@@ -98,6 +131,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
+    /* Play the timer if not in progress. Pause it otherwise */
     @objc func toggleTimer(_ sender: Any?) {
         timer.inProgress ? timer.pause() : timer.play()
     }
@@ -111,7 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func nextMobber(_ sender: Any) {
-        mobberManager.nextMobber()
+        mobberManager.next()
         timer.stop()
     }
 
