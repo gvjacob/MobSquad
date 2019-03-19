@@ -8,7 +8,7 @@
 
 import Cocoa
 
-// Define notification events
+// Define notification events 
 extension Notification.Name {
     // Mob timer did change time
     static let didChangeTime = Notification.Name("didChangeTime")
@@ -27,17 +27,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var minutes: Int
     var shuffle: Bool
     
-    // UI
+    // Settings UI
+    
+    // Status bar UI
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-
+    let menu = NSMenu()
+    let playPauseItem = NSMenuItem(title: "Play", action: #selector(AppDelegate.toggleTimer(_:)), keyEquivalent: "p")
+    let resetItem = NSMenuItem(title: "Reset", action: #selector(AppDelegate.resetTimer(_:)), keyEquivalent: "r")
+    let nextItem = NSMenuItem(title: "Next", action: #selector(AppDelegate.nextMobber(_:)), keyEquivalent: "n")
+    let settingsItem = NSMenuItem(title: "Settings", action: #selector(AppDelegate.openSettings(_:)), keyEquivalent: "S")
+    let quitItem = NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
     
     // Models
-    // Need to grab from database
     var mobberManager: MobberManager
     var timer: MobTimer
     
+    /* Grab user defaults and initialize models */
     override init() {
-        mobbers = userDefaults.stringArray(forKey: "mobbers") ?? ["Gino"]
+        userDefaults.register(defaults: ["mobbers": [],
+                                         "minutes": 10,
+                                         "shuffle": false])
+        userDefaults.set(["Gino", "Alan"], forKey: "mobbers")
+        userDefaults.set(1, forKey: "minutes")
+        
+        mobbers = userDefaults.stringArray(forKey: "mobbers") ?? []
         minutes = userDefaults.integer(forKey: "minutes")
         shuffle = userDefaults.bool(forKey: "shuffle")
         
@@ -45,12 +58,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         timer = MobTimer(minutes: self.minutes)
     }
 
+    /* Register observers, construct base UI */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeTime(_:)), name: .didChangeTime, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onDidChangeMobber(_:)), name: .didChangeMobber, object: nil)
-        
-
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidUpdateMobbers(_:)), name: .didUpdateMobbers, object: nil)
 
         updateStatusItemTitle(title: getTitle())
         constructMenu()
@@ -67,35 +79,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.title = title
         }
     }
-
-    @objc func onDidChangeTime(_ notification: Notification) {
-        if timer.seconds == 0 {
-            timer.stop()
-            let buttonPressed = timeoutDialog().rawValue
-            switch buttonPressed {
-            case 1000:
-                mobberManager.next()
-                timer.play()
-            case 1001:
-                mobberManager.next()
-                mobberManager.next()
-            default:
-                mobberManager.next()
-                timer.play()
-            }
+    
+    func handleTimeout() {
+        timer.stop()
+        let buttonPressed = timeoutDialog().rawValue
+        switch buttonPressed {
+        case 1000:
+            mobberManager.next()
+            timer.play()
+        case 1001:
+            mobberManager.next()
+            mobberManager.next()
+        default:
+            mobberManager.next()
+            timer.play()
         }
+    }
+    
+    @objc func onDidUpdateMobbers(_ notification: Notification) {
+        updateMenu()
+    }
 
+    /* Update status item title, and show alert if timeout */
+    @objc func onDidChangeTime(_ notification: Notification) {
         updateStatusItemTitle(title: getTitle())
+        if timer.seconds == 0 { handleTimeout() }
     }
     
     @objc func onDidChangeMobber(_ notification: Notification) {
         updateStatusItemTitle(title: getTitle())
+        updateMenu()
     }
     
     @objc func getTitle() -> String {
-        let mobber = mobberManager.getCurrentMobber()
-        if let unwrappedMobber = mobber {
-            return "\(unwrappedMobber.name) \(timer.time())"
+        if let mobber = mobberManager.getCurrentMobber() {
+            print(mobberManager.mobbers)
+            return "\(mobber.name) \(timer.time())"
         }
         return "MobSquad"
     }
@@ -112,36 +131,62 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         alert.addButton(withTitle: "Preferences")
         return alert.runModal()
     }
+    
+    /* Update the status bar item menu */
+    func updateMenu() {
+        // Play or pause
+        playPauseItem.title = timer.inProgress ? "Pause" : "Play"
+        
+        // Next mobber
+        if let nextMobber = mobberManager.getNextMobber() {
+            nextItem.title = "Next: \(nextMobber.name)"
+        }
+        
+        // Disabling buttons
+        let enabled = !mobberManager.mobbers.isEmpty
+        playPauseItem.isEnabled = enabled
+        nextItem.isEnabled = enabled
+        resetItem.isEnabled = enabled
+    }
 
     /**
      * Construct the menu for status bar button.
      */
     func constructMenu() {
-        let menu = NSMenu()
+        menu.addItem(playPauseItem)
+        menu.addItem(resetItem)
+        menu.addItem(nextItem)
         
-        menu.addItem(NSMenuItem(title: "Play / Pause", action: #selector(AppDelegate.toggleTimer(_:)), keyEquivalent: "p"))
-        menu.addItem(NSMenuItem(title: "Reset", action: #selector(AppDelegate.resetTimer(_:)), keyEquivalent: "s"))
-        menu.addItem(NSMenuItem(title: "Next", action: #selector(AppDelegate.nextMobber(_:)), keyEquivalent: "n"))
         menu.addItem(NSMenuItem.separator())
         
-        menu.addItem(NSMenuItem(title: "Preferences", action: #selector(AppDelegate.printQuote(_:)), keyEquivalent: "P"))
-        menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(settingsItem)
+        menu.addItem(quitItem)
         
+        menu.autoenablesItems = false
+        updateMenu()
         statusItem.menu = menu
     }
 
 
     /* Play the timer if not in progress. Pause it otherwise */
     @objc func toggleTimer(_ sender: Any?) {
+        if mobberManager.mobbers.isEmpty { return }
         timer.inProgress ? timer.pause() : timer.play()
+        updateMenu()
     }
     
     @objc func resetTimer(_ sender: Any?) {
         timer.stop()
     }
     
-    @objc func printQuote(_ sender: Any?) {
-        print("Preferences")
+    @objc func openSettings(_ sender: Any?) {
+        var myWindow: NSWindow? = nil
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateController(withIdentifier: "Settings") as! NSViewController
+        myWindow = NSWindow(contentViewController: controller)
+        myWindow?.makeKeyAndOrderFront(self)
+        let vc = NSWindowController(window: myWindow)
+        vc.showWindow(self)
     }
     
     @objc func nextMobber(_ sender: Any) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Hu8-gg-77R">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -684,7 +684,7 @@
         <scene sceneID="x2K-zS-VFP">
             <objects>
                 <windowController storyboardIdentifier="Preferences" id="Hu8-gg-77R" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" id="gQb-gs-eNv">
+                    <window key="window" title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="gQb-gs-eNv">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="294" y="323" width="480" height="270"/>
@@ -704,8 +704,8 @@
         <!--View Controller-->
         <scene sceneID="JLA-aJ-GLS">
             <objects>
-                <viewController id="Pzq-jn-pMZ" customClass="ViewController" customModule="MobSquad" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="NN4-Dh-SWn">
+                <viewController storyboardIdentifier="Settings" id="Pzq-jn-pMZ" customClass="ViewController" customModule="MobSquad" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" identifier="Settings" id="NN4-Dh-SWn">
                         <rect key="frame" x="0.0" y="0.0" width="662" height="376"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -790,7 +790,7 @@
                 <customObject id="LG1-xj-02B" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="Cux-Gs-1ar"/>
             </objects>
-            <point key="canvasLocation" x="179" y="711"/>
+            <point key="canvasLocation" x="88" y="697"/>
         </scene>
     </scenes>
 </document>

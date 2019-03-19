@@ -28,7 +28,9 @@ class MobberManager {
     }
     
     func next() {
-        currentIndex = getNextIndex()
+        if let nextIndex = getNextIndex() {
+            currentIndex = nextIndex
+        }
     }
     
     func getCurrentMobber() -> (name: String, enabled: Bool)? {
@@ -36,7 +38,10 @@ class MobberManager {
     }
 
     func getNextMobber() -> (name: String, enabled: Bool)? {
-        return getMobberAt(index: getNextIndex())
+        if let nextIndex = getNextIndex() {
+            return getMobberAt(index: nextIndex)
+        }
+        return nil
     }
     
     func addMobber(name: String, enabled: Bool = true) {
@@ -55,7 +60,7 @@ class MobberManager {
         return index >= mobbers.count ? nil : mobbers[index]
     }
     
-    private func getNextIndex() -> Int {
-        return (currentIndex + 1) % mobbers.count
+    private func getNextIndex() -> Int? {
+        return mobbers.isEmpty ? nil : (currentIndex + 1) % mobbers.count
     }
 }

@@ -12,14 +12,6 @@ var name = ""
 
 class ViewController: NSViewController {
     
-    let appDelegate = NSApplication.shared.delegate as! AppDelegate
-    
-    var mobbers: Array<(String, Bool)> = []
-    
-    override func viewWillAppear() {
-        mobbers = appDelegate.mobberManager.mobbers
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
