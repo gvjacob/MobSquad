@@ -106,6 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /* Update status item title, and show alert if timeout */
     @objc func onDidChangeTime(_ notification: Notification) {
         updateStatusItemTitle(title: getTitle())
+        updateMenu()
         if timer.seconds == 0 { handleTimeout() }
     }
     

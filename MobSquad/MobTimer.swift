@@ -12,7 +12,11 @@ import Foundation
 
 class MobTimer {
     var timer: Timer?
-    var minutes: Int
+    var minutes: Int {
+        didSet {
+            stop()
+        }
+    }
     var seconds: Int {
         didSet {
             NotificationCenter.default.post(name: .didChangeTime, object: nil)

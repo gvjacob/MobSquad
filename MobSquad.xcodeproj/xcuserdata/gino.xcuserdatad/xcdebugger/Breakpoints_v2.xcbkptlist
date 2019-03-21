@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MobSquad/AppDelegate.swift"
-            timestampString = "574829531.4925081"
+            timestampString = "574829875.149788"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "AppDelegate"
             landmarkType = "3">
          </BreakpointContent>
