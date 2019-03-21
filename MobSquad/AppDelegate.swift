@@ -95,6 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func onDidUpdateMobbers(_ notification: Notification) {
+        updateStatusItemTitle(title: getTitle())
         updateMenu()
     }
 

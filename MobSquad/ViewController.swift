@@ -18,16 +18,41 @@ class ViewController: NSViewController {
     // UI Data
     var selectedRows: IndexSet = []
     
+    override func keyDown(with event: NSEvent) {
+        print(event.keyCode)
+        if event.keyCode == 51 {
+            self.selectedRows.reversed().forEach {
+                let mobberName = self.mobberManager.mobbers[$0].name
+                mobberManager.removeMobber(name: mobberName)
+                reloadMobberList()
+            }
+            self.selectedRows = []
+        } else if event.keyCode == 36 {
+            addMobberIfInput()
+        }
+    }
+    
     // UI Connections
-    @IBAction func deleteMobbers(_ sender: Any) {
-        self.selectedRows.forEach {
-            let mobberName = mobberManager.mobbers[$0].name
-            mobberManager.removeMobber(name: mobberName)
+    @IBOutlet weak var mobberTable: NSTableView!
+    @IBOutlet weak var minutesField: NSTextField!
+    @IBOutlet weak var addMobberField: NSTextField!
+    
+    @IBAction func addMobberFieldAction(_ sender: Any) {
+        addMobberIfInput()
+    }
+    
+    @IBAction func addMobberButton(_ sender: NSButton) {
+        addMobberIfInput()
+    }
+    
+    func addMobberIfInput() {
+        let mobberName = addMobberField.stringValue
+        if mobberName != "" {
+            mobberManager.addMobber(name: mobberName)
+            addMobberField.stringValue = ""
             reloadMobberList()
         }
     }
-    @IBOutlet weak var mobberTable: NSTableView!
-    @IBOutlet weak var minutesField: NSTextField!
     
     @IBAction func textShouldEndEditing(_ sender: NSTextField) {
         let newMinutes = Int(sender.stringValue)
