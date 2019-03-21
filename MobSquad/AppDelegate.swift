@@ -47,8 +47,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         userDefaults.register(defaults: ["mobbers": [],
                                          "minutes": 10,
                                          "shuffle": false])
-        userDefaults.set(["Gino", "Alan"], forKey: "mobbers")
-        userDefaults.set(1, forKey: "minutes")
         
         mobbers = userDefaults.stringArray(forKey: "mobbers") ?? []
         minutes = userDefaults.integer(forKey: "minutes")
@@ -113,7 +111,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func getTitle() -> String {
         if let mobber = mobberManager.getCurrentMobber() {
-            print(mobberManager.mobbers)
             return "\(mobber.name) \(timer.time())"
         }
         return "MobSquad"
@@ -180,13 +177,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func openSettings(_ sender: Any?) {
-        var myWindow: NSWindow? = nil
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateController(withIdentifier: "Settings") as! NSViewController
-        myWindow = NSWindow(contentViewController: controller)
-        myWindow?.makeKeyAndOrderFront(self)
-        let vc = NSWindowController(window: myWindow)
-        vc.showWindow(self)
+        let controller = storyboard.instantiateController(withIdentifier: "SettingsWindow") as! NSWindowController
+        controller.showWindow(self)
     }
     
     @objc func nextMobber(_ sender: Any) {

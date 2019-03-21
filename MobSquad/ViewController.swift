@@ -8,17 +8,63 @@
 
 import Cocoa
 
-var name = ""
-
 class ViewController: NSViewController {
+    
+    // Models
+    let app = NSApplication.shared.delegate as! AppDelegate
+    var mobberManager: MobberManager
+    var timer: MobTimer
+    
+    // UI Data
+    var selectedRows: IndexSet = []
+    
+    // UI Connections
+    @IBAction func deleteMobbers(_ sender: Any) {
+        self.selectedRows.forEach {
+            let mobberName = mobberManager.mobbers[$0].name
+            mobberManager.removeMobber(name: mobberName)
+            reloadMobberList()
+        }
+    }
+    @IBOutlet weak var mobberTable: NSTableView!
+    @IBOutlet weak var minutesField: NSTextField!
+    
+    @IBAction func textShouldEndEditing(_ sender: NSTextField) {
+        let newMinutes = Int(sender.stringValue)
+        if let minutes = newMinutes {
+            if minutes > 0 && minutes <= 60 {
+                timer.minutes = minutes
+                timer.stop()
+            }
+        }
+        
+        minutesField.stringValue = String(timer.minutes)
+    }
+    
+    override init(nibName: NSNib.Name?, bundle: Bundle?) {
+        mobberManager = app.mobberManager
+        timer = app.timer
+        super.init(nibName: nibName, bundle: bundle)
+    }
+    
+    required init(coder: NSCoder) {
+        mobberManager = app.mobberManager
+        timer = app.timer
+        super.init(coder: coder)!
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        mobberTable.delegate = self
+        mobberTable.dataSource = self
         
+        minutesField.stringValue = String(timer.minutes)
 
-        // Do any additional setup after loading the view.
+    }
+    
+    func reloadMobberList() {
+        mobberTable.reloadData()
     }
 
     override var representedObject: Any? {
@@ -30,3 +76,44 @@ class ViewController: NSViewController {
 
 }
 
+
+
+extension ViewController: NSTableViewDataSource {
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return mobberManager.mobbers.count
+    }
+}
+
+extension ViewController: NSTableViewDelegate {
+    fileprivate enum CellIdentifiers {
+        static let MobberName = "MobberName"
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        let tableView = notification.object as! NSTableView
+        self.selectedRows = tableView.selectedRowIndexes
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        if mobberManager.mobbers.isEmpty {
+            return nil
+        }
+        
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.MobberName), owner: nil) as? NSTableCellView {
+            let mobbers = mobberManager.mobbers
+            let mobberName = mobbers[row].name
+            cell.textField?.stringValue = mobberName
+            return cell
+        }
+        
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("MobberName"), owner: nil) as? NSTableCellView {
+            let mobbers = mobberManager.mobbers
+            let mobberName = mobbers[row].name
+            cell.textField?.stringValue = mobberName
+            return cell
+        }
+
+        return nil
+    }
+}
