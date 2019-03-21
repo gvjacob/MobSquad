@@ -68,6 +68,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+        userDefaults.set(timer.minutes, forKey: "minutes")
+        
+        let mobberNames = mobberManager.mobbers.map { $0.name }
+        userDefaults.set(mobberNames, forKey: "mobbers")
     }
     
     
@@ -181,6 +185,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateController(withIdentifier: "SettingsWindow") as! NSWindowController
         controller.showWindow(self)
+        if let window = controller.window {
+            print("here")
+            window.makeKeyAndOrderFront(storyboard)
+        }
     }
     
     @objc func nextMobber(_ sender: Any) {

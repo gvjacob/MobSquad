@@ -33,6 +33,10 @@ class MobberManager {
         }
     }
     
+    func shuffle() {
+        mobbers = mobbers.shuffled()
+    }
+    
     func getCurrentMobber() -> (name: String, enabled: Bool)? {
         return getMobberAt(index: currentIndex)
     }

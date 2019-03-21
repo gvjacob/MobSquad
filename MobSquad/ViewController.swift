@@ -37,6 +37,12 @@ class ViewController: NSViewController {
     @IBOutlet weak var minutesField: NSTextField!
     @IBOutlet weak var addMobberField: NSTextField!
     
+    @IBAction func shuffleButton(_ sender: NSButton) {
+        timer.stop()
+        mobberManager.shuffle()
+        reloadMobberList()
+    }
+    
     @IBAction func addMobberFieldAction(_ sender: Any) {
         addMobberIfInput()
     }
@@ -47,7 +53,7 @@ class ViewController: NSViewController {
     
     func addMobberIfInput() {
         let mobberName = addMobberField.stringValue
-        if mobberName != "" {
+        if !mobberManager.mobbers.contains(where: { $0.name == mobberName }) && mobberName != "" {
             mobberManager.addMobber(name: mobberName)
             addMobberField.stringValue = ""
             reloadMobberList()
