@@ -4,8 +4,6 @@
 <dict>
 	<key>minutes</key>
 	<integer>12</integer>
-	<key>LSUIElement</key>
-	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

@@ -17,9 +17,9 @@ class ViewController: NSViewController {
     
     // UI Data
     var selectedRows: IndexSet = []
+    var alert: Alert?
     
     override func keyDown(with event: NSEvent) {
-        print(event.keyCode)
         if event.keyCode == 51 {
             self.selectedRows.reversed().forEach {
                 let mobberName = self.mobberManager.mobbers[$0].name
@@ -27,8 +27,6 @@ class ViewController: NSViewController {
                 reloadMobberList()
             }
             self.selectedRows = []
-        } else if event.keyCode == 36 {
-            addMobberIfInput()
         }
     }
     
@@ -36,6 +34,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var mobberTable: NSTableView!
     @IBOutlet weak var minutesField: NSTextField!
     @IBOutlet weak var addMobberField: NSTextField!
+    @IBOutlet weak var alertLabel: NSTextField!
     
     @IBAction func shuffleButton(_ sender: NSButton) {
         timer.stop()
@@ -53,11 +52,17 @@ class ViewController: NSViewController {
     
     func addMobberIfInput() {
         let mobberName = addMobberField.stringValue
-        if !mobberManager.mobbers.contains(where: { $0.name == mobberName }) && mobberName != "" {
+        if !mobberManager.mobbers.contains(where: { $0.name == mobberName }) {
+            if mobberName == "" {
+                return
+            }
             mobberManager.addMobber(name: mobberName)
             addMobberField.stringValue = ""
             reloadMobberList()
+            return
         }
+        
+        alert?.setAlert(message: "Mobber already on rotation")
     }
     
     @IBAction func textShouldEndEditing(_ sender: NSTextField) {
@@ -66,6 +71,8 @@ class ViewController: NSViewController {
             if minutes > 0 && minutes <= 60 {
                 timer.minutes = minutes
                 timer.stop()
+            } else {
+                alert?.setAlert(message: "Duration must be between 1 and 60")
             }
         }
         
@@ -90,8 +97,9 @@ class ViewController: NSViewController {
         mobberTable.delegate = self
         mobberTable.dataSource = self
         
+        alertLabel.stringValue = ""
+        alert = Alert(label: alertLabel)
         minutesField.stringValue = String(timer.minutes)
-
     }
     
     func reloadMobberList() {

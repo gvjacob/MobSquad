@@ -186,10 +186,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateController(withIdentifier: "SettingsWindow") as! NSWindowController
         controller.showWindow(self)
-        if let window = controller.window {
-            print("here")
-            window.makeKeyAndOrderFront(storyboard)
-        }
     }
     
     @objc func nextMobber(_ sender: Any) {

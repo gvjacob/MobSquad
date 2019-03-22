@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34D1A70222443F9700827D04 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D1A70122443F9700827D04 /* Alert.swift */; };
 		34DB269D2239AA34009B97F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB269C2239AA34009B97F2 /* AppDelegate.swift */; };
 		34DB269F2239AA34009B97F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DB269E2239AA34009B97F2 /* ViewController.swift */; };
 		34DB26A12239AA36009B97F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34DB26A02239AA36009B97F2 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		34D1A70122443F9700827D04 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		34DB26992239AA34009B97F2 /* MobSquad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobSquad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DB269C2239AA34009B97F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34DB269E2239AA34009B97F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				34DB26A22239AA36009B97F2 /* Main.storyboard */,
 				34DB26A52239AA36009B97F2 /* Info.plist */,
 				34DB26A62239AA36009B97F2 /* MobSquad.entitlements */,
+				34D1A70122443F9700827D04 /* Alert.swift */,
 				34DB26CA2239F6A5009B97F2 /* MobberManager.swift */,
 				34DB26CC2239F752009B97F2 /* MobTimer.swift */,
 			);
@@ -263,6 +266,7 @@
 				34DB26CD2239F752009B97F2 /* MobTimer.swift in Sources */,
 				34DB269F2239AA34009B97F2 /* ViewController.swift in Sources */,
 				34DB269D2239AA34009B97F2 /* AppDelegate.swift in Sources */,
+				34D1A70222443F9700827D04 /* Alert.swift in Sources */,
 				34DB26CB2239F6A5009B97F2 /* MobberManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

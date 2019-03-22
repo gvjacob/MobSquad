@@ -710,7 +710,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fK3-wS-cMw">
-                                <rect key="frame" x="38" y="14" width="159" height="17"/>
+                                <rect key="frame" x="42" y="70" width="159" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="minutes per rotation" id="M1w-8i-mlx">
                                     <font key="font" metaFont="system"/>
@@ -719,9 +719,9 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hjS-1n-9fo">
-                                <rect key="frame" x="10" y="10" width="24" height="22"/>
+                                <rect key="frame" x="10" y="67" width="27" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="border" drawsBackground="YES" id="HBz-hg-tWI">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="border" alignment="center" drawsBackground="YES" id="HBz-hg-tWI">
                                     <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="eop-Ft-7Z3"/>
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -796,7 +796,7 @@
                                 </tableHeaderView>
                             </scrollView>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KuV-vL-pRu">
-                                <rect key="frame" x="10" y="97" width="207" height="22"/>
+                                <rect key="frame" x="10" y="97" width="208" height="22"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="border" alignment="center" placeholderString="Add a Mobber" drawsBackground="YES" id="vqv-gl-cPb">
                                     <font key="font" metaFont="system"/>
@@ -829,10 +829,27 @@
                                     <action selector="shuffleButton:" target="Pzq-jn-pMZ" id="JDw-rF-c2l"/>
                                 </connections>
                             </button>
+                            <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="1Xv-AD-yag">
+                                <rect key="frame" x="10" y="34" width="231" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NaV-95-dna">
+                                <rect key="frame" x="8" y="12" width="235" height="17"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="noh-PS-D1a">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="alertLabel:" target="Pzq-jn-pMZ" id="zga-Ka-bH9"/>
+                                </connections>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="addMobberField" destination="KuV-vL-pRu" id="dBn-zu-B4J"/>
+                        <outlet property="alertLabel" destination="NaV-95-dna" id="F0w-8r-N2T"/>
                         <outlet property="minutesField" destination="hjS-1n-9fo" id="GUH-aK-KBi"/>
                         <outlet property="mobberList" destination="hnl-fU-03v" id="Yvx-fl-WH2"/>
                         <outlet property="mobberTable" destination="2hd-Mk-ave" id="2qO-4s-Khg"/>
